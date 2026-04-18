@@ -1,0 +1,27 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#define BUTTON_PIN 12
+LiquidCrystal_I2C lcd(0x27, 16, 2); // I2C address 0x27
+void setup() {
+ pinMode(BUTTON_PIN, INPUT);
+ lcd.init();
+ lcd.backlight();
+ lcd.setCursor(0, 0);
+ lcd.print("Dice Roller Ready");
+ lcd.setCursor(0, 1);
+ lcd.print("Press the button");
+ randomSeed(analogRead(0)); // Seed randomness
+}
+void loop() {
+ if (digitalRead(BUTTON_PIN) == HIGH) {
+ int diceRoll = random(1, 7); // Random number 1–6
+ lcd.clear();
+ lcd.setCursor(0, 0);
+ lcd.print("You rolled:");
+ lcd.setCursor(6, 1);
+ lcd.print(diceRoll);
+ delay(1000); // Prevent multiple reads from one press
+ lcd.setCursor(0, 1);
+ lcd.print("Press again");
+ }
+}
